@@ -1,88 +1,132 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo Multimedia</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>Catálogo Dinámico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .item video, .item img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .buttons {
+      margin-top: 10px;
+    }
+
+    .buttons button {
+      margin-right: 5px;
+    }
+  </style>
 </head>
-<body class="p-4">
-  <div class="container">
-    <h1 class="mb-4">Catálogo Multimedia</h1>
+<body>
+  <h1>Catálogo Dinámico</h1>
 
-    <form id="itemForm" class="mb-4">
-      <input type="hidden" id="itemId" />
-      <input type="text" id="title" class="form-control mb-2" placeholder="Título" required />
-      <textarea id="description" class="form-control mb-2" placeholder="Descripción"></textarea>
-      <input type="url" id="media_url" class="form-control mb-2" placeholder="URL de YouTube/SoundCloud" />
-      <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+  <form id="catalog-form">
+    <input type="text" id="title" placeholder="Título" required />
+    <textarea id="description" placeholder="Descripción"></textarea>
+    <input type="url" id="media_url" placeholder="URL de imagen o video" />
+    <button type="submit">Agregar</button>
+  </form>
 
-    <div id="catalogList"></div>
-  </div>
+  <div id="catalog-list"></div>
 
   <script>
-    const api = '/api/catalog';
+    const form = document.getElementById('catalog-form');
+    const list = document.getElementById('catalog-list');
 
-    async function loadCatalog() {
-      const res = await fetch(api);
-      const data = await res.json();
-      const list = data.map(item => `
-        <div class="card mb-2">
-          <div class="card-body">
-            <h5>${item.title}</h5>
-            <p>${item.description}</p>
-            <div class="mb-2">
-              ${item.media_url.includes('youtube') ?
-                `<iframe width="100%" height="200" src="${item.media_url}" frameborder="0" allowfullscreen></iframe>` :
-                `<iframe width="100%" height="166" scrolling="no" frameborder="no" src="${item.media_url}"></iframe>`}
-            </div>
-            <button onclick="editItem(${item.id}, '${item.title}', '${item.description}', '${item.media_url}')" class="btn btn-sm btn-warning">Editar</button>
-            <button onclick="deleteItem(${item.id})" class="btn btn-sm btn-danger">Eliminar</button>
-          </div>
-        </div>
-      `).join('');
-      document.getElementById('catalogList').innerHTML = list;
+    // Cargar registros al inicio
+    window.onload = loadItems;
+
+    function loadItems() {
+      fetch('/api/catalog')
+        .then(res => res.json())
+        .then(data => {
+          list.innerHTML = '';
+          data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.innerHTML = `
+              <strong>${item.title}</strong>
+              <p>${item.description}</p>
+              ${renderMedia(item.media_url)}
+              <div class="buttons">
+                <button onclick="editItem(${item.id}, '${item.title}', '${item.description}', '${item.media_url}')">Editar</button>
+                <button onclick="deleteItem(${item.id})">Eliminar</button>
+              </div>
+            `;
+            list.appendChild(div);
+          });
+        });
     }
 
-    async function saveItem(e) {
+    function renderMedia(url) {
+      if (!url) return '';
+      if (url.match(/\.(mp4|webm|ogg)$/)) {
+        return `<video controls src="${url}"></video>`;
+      } else {
+        return `<img src="${url}" alt="Media">`;
+      }
+    }
+
+    form.onsubmit = e => {
       e.preventDefault();
-      const id = document.getElementById('itemId').value;
-      const title = document.getElementById('title').value;
-      const description = document.getElementById('description').value;
-      const media_url = document.getElementById('media_url').value;
-
-      const payload = { title, description, media_url };
-      const method = id ? 'PUT' : 'POST';
-      const url = id ? `${api}/${id}` : api;
-
-      await fetch(url, {
-        method,
+      const data = {
+        title: form.title.value,
+        description: form.description.value,
+        media_url: form.media_url.value
+      };
+      fetch('/api/catalog', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(data)
+      }).then(() => {
+        form.reset();
+        loadItems();
       });
-
-      document.getElementById('itemForm').reset();
-      loadCatalog();
-    }
+    };
 
     function editItem(id, title, description, media_url) {
-      document.getElementById('itemId').value = id;
-      document.getElementById('title').value = title;
-      document.getElementById('description').value = description;
-      document.getElementById('media_url').value = media_url;
+      const newTitle = prompt('Editar título:', title);
+      const newDescription = prompt('Editar descripción:', description);
+      const newMediaUrl = prompt('Editar URL de media:', media_url);
+      if (newTitle !== null) {
+        fetch(`/api/catalog/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: newTitle,
+            description: newDescription,
+            media_url: newMediaUrl
+          })
+        }).then(() => loadItems());
+      }
     }
 
-    async function deleteItem(id) {
-      await fetch(`${api}/${id}`, { method: 'DELETE' });
-      loadCatalog();
+    function deleteItem(id) {
+      if (confirm('¿Estás seguro de eliminar este elemento?')) {
+        fetch(`/api/catalog/${id}`, { method: 'DELETE' })
+          .then(() => loadItems());
+      }
     }
-
-    document.getElementById('itemForm').addEventListener('submit', saveItem);
-    loadCatalog();
   </script>
 </body>
 </html>
-
-
