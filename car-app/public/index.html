@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
+   <div class="container">
 <!-- Header -->
     <header class="header">
       <img src="multimedia/jdm.png" alt="Logo" class="logo">
@@ -16,13 +16,14 @@
 
   <form id="catalog-form">
     <input type="text" id="title" placeholder="Marca" required />
-    <textarea id="text" placeholder="Modelo"></textarea>
-    <input type="text" id="media_url" placeholder="año" />
+    <input type="text" id="text" placeholder="Modelo"required/>
+    <input type="text" id="media_url" placeholder="año" required/>
     <button type="submit">Agregar</button>
   </form>
 
   <div id="catalog-list"></div>
   </form>
+   </div>
   <script>
     const form = document.getElementById('catalog-form');
     const list = document.getElementById('catalog-list');
