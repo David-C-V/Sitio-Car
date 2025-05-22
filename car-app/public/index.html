@@ -2,53 +2,27 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Catálogo Dinámico</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    form input, form textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-
-    .item {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .item video, .item img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    .buttons {
-      margin-top: 10px;
-    }
-
-    .buttons button {
-      margin-right: 5px;
-    }
-  </style>
+  <title>Catálogo de Carros</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<!-- Header -->
+    <header class="header">
+      <img src="multimedia/jdm.png" alt="Logo" class="logo">
+    </header>
+<form id="formulario">
   <h1>Catálogo Dinámico</h1>
 
   <form id="catalog-form">
-    <input type="text" id="title" placeholder="Título" required />
-    <textarea id="description" placeholder="Descripción"></textarea>
-    <input type="url" id="media_url" placeholder="URL de imagen o video" />
+    <input type="text" id="title" placeholder="Marca" required />
+    <textarea id="text" placeholder="Modelo"></textarea>
+    <input type="text" id="media_url" placeholder="año" />
     <button type="submit">Agregar</button>
   </form>
 
   <div id="catalog-list"></div>
-
+  </form>
   <script>
     const form = document.getElementById('catalog-form');
     const list = document.getElementById('catalog-list');
@@ -128,5 +102,12 @@
       }
     }
   </script>
+
+  <footer class="footer">
+      <p>Curso: Conceptualización de servicios en la nube</p>
+      <p>Nombre: Jose David Custodio Vega</p>
+      <p>Código: 212029217</p>
+      <p>Correo: jose.custodio@udgvirtual.udg.mx</p>
+    </footer>
 </body>
 </html>

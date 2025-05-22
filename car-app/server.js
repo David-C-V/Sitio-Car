@@ -17,8 +17,8 @@ app.use(express.static('public'));
 db.run(`CREATE TABLE IF NOT EXISTS catalog (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
-  description TEXT,
-  media_url TEXT
+  description  TEXT NOT NULL,
+  media_url INTEGER NOT NULL
 )`);
 
 // Rutas API CRUD
