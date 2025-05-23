@@ -98,3 +98,63 @@ h2{
   #catalog-form button {
     display: inline-block;
   }
+
+#catalog-list {
+  margin: 2rem auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: rgba(0, 0, 0, 0.2); /* Muy leve fondo para resaltar los items */
+  border-radius: 10px;
+}
+
+.item {
+  background-color: rgba(0, 0, 0, 0.5); /* Semitransparente para dejar ver el fondo */
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.item strong {
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 1px 1px 2px black;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttons button {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  backdrop-filter: blur(3px);
+  transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.buttons button:first-child {
+  background-color: rgba(255, 193, 7, 0.4); /* amarillo */
+  color: black;
+}
+
+.buttons button:first-child:hover {
+  background-color: rgba(255, 193, 7, 0.6);
+}
