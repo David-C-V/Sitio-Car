@@ -16,9 +16,9 @@ app.use(express.static('public'));
 // Crear tabla si no existe
 db.run(`CREATE TABLE IF NOT EXISTS catalog (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT NOT NULL,
-  description  TEXT NOT NULL,
-  media_url INTEGER NOT NULL
+  marca TEXT NOT NULL,
+  modelo TEXT NOT NULL,
+  anio TEXT NOT NULL
 )`);
 
 // Rutas API CRUD

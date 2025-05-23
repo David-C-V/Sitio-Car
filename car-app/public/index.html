@@ -8,27 +8,25 @@
 <body>
    <div class="container">
 <!-- Header -->
+  <div class="container">
     <header class="header">
       <img src="multimedia/jdm.png" alt="Logo" class="logo">
     </header>
 
-  <h1>Catálogo Dinámico</h1>
+  <form id="formulario">
+   <h1>Catálogo de Autos</h1>
 
   <form id="catalog-form">
-    <input type="text" id="title" placeholder="Marca" required />
-    <input type="text" id="text" placeholder="Modelo"required/>
-    <input type="text" id="media_url" placeholder="año" required/>
+    <input type="text" id="marca" placeholder="Marca" required />
+    <input type="text" id="modelo" placeholder="Modelo" required />
+    <input type="text" id="anio" placeholder="Año" required />
     <button type="submit">Agregar</button>
   </form>
-
-  <div id="catalog-list"></div>
-  </form>
-   </div>
-  <script>
+ 
+   <script>
     const form = document.getElementById('catalog-form');
     const list = document.getElementById('catalog-list');
 
-    // Cargar registros al inicio
     window.onload = loadItems;
 
     function loadItems() {
@@ -40,11 +38,9 @@
             const div = document.createElement('div');
             div.className = 'item';
             div.innerHTML = `
-              <strong>${item.title}</strong>
-              <p>${item.description}</p>
-              ${renderMedia(item.media_url)}
+              <strong>${item.marca} ${item.modelo} (${item.anio})</strong>
               <div class="buttons">
-                <button onclick="editItem(${item.id}, '${item.title}', '${item.description}', '${item.media_url}')">Editar</button>
+                <button onclick="editItem(${item.id}, '${item.marca}', '${item.modelo}', '${item.anio}')">Editar</button>
                 <button onclick="deleteItem(${item.id})">Eliminar</button>
               </div>
             `;
@@ -53,21 +49,12 @@
         });
     }
 
-    function renderMedia(url) {
-      if (!url) return '';
-      if (url.match(/\.(mp4|webm|ogg)$/)) {
-        return `<video controls src="${url}"></video>`;
-      } else {
-        return `<img src="${url}" alt="Media">`;
-      }
-    }
-
     form.onsubmit = e => {
       e.preventDefault();
       const data = {
-        title: form.title.value,
-        description: form.description.value,
-        media_url: form.media_url.value
+        marca: form.marca.value,
+        modelo: form.modelo.value,
+        anio: form.anio.value
       };
       fetch('/api/catalog', {
         method: 'POST',
@@ -79,18 +66,18 @@
       });
     };
 
-    function editItem(id, title, description, media_url) {
-      const newTitle = prompt('Editar título:', title);
-      const newDescription = prompt('Editar descripción:', description);
-      const newMediaUrl = prompt('Editar URL de media:', media_url);
-      if (newTitle !== null) {
+    function editItem(id, marca, modelo, anio) {
+      const newMarca = prompt('Editar marca:', marca);
+      const newModelo = prompt('Editar modelo:', modelo);
+      const newAnio = prompt('Editar año:', anio);
+      if (newMarca && newModelo && newAnio) {
         fetch(`/api/catalog/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            title: newTitle,
-            description: newDescription,
-            media_url: newMediaUrl
+            marca: newMarca,
+            modelo: newModelo,
+            anio: newAnio
           })
         }).then(() => loadItems());
       }
@@ -110,5 +97,6 @@
       <p>Código: 212029217</p>
       <p>Correo: jose.custodio@udgvirtual.udg.mx</p>
     </footer>
+    </div>
 </body>
 </html>
