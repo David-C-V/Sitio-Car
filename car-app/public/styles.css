@@ -46,7 +46,7 @@
     text-align: center;
     margin-bottom: 5%;
   }
-#formulario{
+#catalog-form{
   margin-top: 2%;
     flex: 1;
     text-align: center; 
@@ -57,20 +57,20 @@ h1{
 h2{
   margin-top: 20px;
 }
-#formulario {
+#catalog-form {
     max-width: 100%;
     padding: 1rem;
     border-radius: 8px;
   }
 
-  #formulario h2,
-  #formulario h1,
-  #formulario ul {
+  #catalog-form h2,
+  #catalog-form h1,
+  #catalog-form ul {
     margin-bottom: 1rem;
   }
 
-  #formulario input,
-  #formulario button {
+  #catalog-form input,
+  #catalog-form button {
     margin-right: 1rem;
     margin-bottom: 1rem;
     padding: 0.5rem;
@@ -78,23 +78,23 @@ h2{
     border: 1px solid #ccc;
   }
 
-  #formulario button {
+  #catalog-form button {
     background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
   }
 
-  #formulario button:hover {
+  #catalog-form button:hover {
     background-color: #0056b3;
   }
 
   /* Agrupar los inputs y el botón en línea */
-  #formulario br {
+  #catalog-form br {
     display: none;
   }
 
-  #formulario input,
-  #formulario button {
+  #catalog-form input,
+  #catalog-form button {
     display: inline-block;
   }

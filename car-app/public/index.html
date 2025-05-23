@@ -13,16 +13,18 @@
       <img src="multimedia/jdm.png" alt="Logo" class="logo">
     </header>
 
-  <form id="formulario">
-   <h1>Catálogo de Autos</h1>
 
   <form id="catalog-form">
+   <h1>Catálogo de Autos</h1>
+
     <input type="text" id="marca" placeholder="Marca" required />
     <input type="text" id="modelo" placeholder="Modelo" required />
     <input type="text" id="anio" placeholder="Año" required />
     <button type="submit">Agregar</button>
   </form>
  
+  <div id="catalog-list"></div>
+
    <script>
     const form = document.getElementById('catalog-form');
     const list = document.getElementById('catalog-list');
